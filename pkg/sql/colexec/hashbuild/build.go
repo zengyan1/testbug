@@ -16,6 +16,7 @@ package hashbuild
 
 import (
 	"bytes"
+	"github.com/matrixorigin/matrixone/pkg/logutil"
 	"runtime"
 	"time"
 
@@ -108,9 +109,11 @@ func (arg *Argument) Call(proc *process.Process) (vm.CallResult, error) {
 			ctr.state = HandleRuntimeFilter
 
 		case HandleRuntimeFilter:
+			logutil.Infof("testbug: begin handle RuntimeFilter in hash build")
 			if err := ctr.handleRuntimeFilter(ap, proc); err != nil {
 				return result, err
 			}
+			logutil.Infof("testbug: finish handle RuntimeFilter in hash build")
 
 		case SendHashMap:
 			result.Batch = batch.NewWithSize(0)
@@ -131,6 +134,7 @@ func (arg *Argument) Call(proc *process.Process) (vm.CallResult, error) {
 			} else {
 				ctr.cleanHashMap()
 			}
+			logutil.Infof("testbug: send hashmap in hash build")
 			ctr.state = SendBatch
 			return result, nil
 		case SendBatch:
@@ -140,6 +144,7 @@ func (arg *Argument) Call(proc *process.Process) (vm.CallResult, error) {
 				result.Batch = ctr.batches[ctr.batchIdx]
 				ctr.batchIdx++
 			}
+			logutil.Infof("testbug: send batch in hash build")
 			return result, nil
 		default:
 			result.Batch = nil

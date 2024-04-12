@@ -310,9 +310,11 @@ func (s *Scope) handleRuntimeFilter(c *Compile) error {
 				case filter := <-receiver.ch:
 					switch filter.Typ {
 					case pbpipeline.RuntimeFilter_PASS:
+						logutil.Infof("testbug: receive RuntimeFilter_PASS")
 						continue
 
 					case pbpipeline.RuntimeFilter_DROP:
+						logutil.Infof("testbug: receive RuntimeFilter_DROP")
 						exprs = nil
 						// FIXME: Should give an empty "Data" and then early return
 						s.NodeInfo.Data = nil
@@ -321,6 +323,7 @@ func (s *Scope) handleRuntimeFilter(c *Compile) error {
 						break FOR_LOOP
 
 					case pbpipeline.RuntimeFilter_IN:
+						logutil.Infof("testbug: receive RuntimeFilter_IN")
 						inExpr := plan2.MakeInExpr(c.ctx, spec.Expr, filter.Card, filter.Data, spec.MatchPrefix)
 						inExprList = append(inExprList, inExpr)
 

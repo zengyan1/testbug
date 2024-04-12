@@ -16,6 +16,7 @@ package indexbuild
 
 import (
 	"bytes"
+	"github.com/matrixorigin/matrixone/pkg/logutil"
 	"time"
 
 	"github.com/matrixorigin/matrixone/pkg/container/batch"
@@ -68,9 +69,11 @@ func (arg *Argument) Call(proc *process.Process) (vm.CallResult, error) {
 			ctr.state = HandleRuntimeFilter
 
 		case HandleRuntimeFilter:
+			logutil.Infof("testbug: begin handle RuntimeFilter in index build")
 			if err := ctr.handleRuntimeFilter(ap, proc); err != nil {
 				return result, err
 			}
+			logutil.Infof("testbug: finish handle RuntimeFilter in index build")
 			ctr.state = End
 		default:
 			if ctr.batch != nil {

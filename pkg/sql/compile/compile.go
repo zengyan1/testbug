@@ -3697,11 +3697,13 @@ func (c *Compile) generateNodes(n *plan.Node) (engine.Nodes, []any, []types.T, e
 	}
 
 	if c.determinExpandRanges(n, rel) {
+		logutil.Infof("testbug: don't delay expand ranges for %v", n.TableDef.Name)
 		ranges, err = c.expandRanges(n, rel, n.BlockFilterList)
 		if err != nil {
 			return nil, nil, nil, err
 		}
 	} else {
+		logutil.Infof("testbug: delay expand ranges for %v", n.TableDef.Name)
 		// add current CN
 		nodes = append(nodes, engine.Node{
 			Addr: c.addr,
